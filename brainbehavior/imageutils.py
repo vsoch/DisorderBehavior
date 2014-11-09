@@ -88,6 +88,6 @@ class Atlas:
             voxel_count = np.sum(np.logical_and(region_mask, img).astype(np.int))
             feature_vector.append(int(voxel_count))
         feature_vectors.append(feature_vector)
-      df = pd.DataFrame(feature_vectors,columns=feature_labels)
-      df.to_csv(output_file,sep="\t")
+    df = pd.DataFrame(feature_vectors,columns=feature_labels)
+    df.to_csv(output_file,sep="\t")
     return df
