@@ -25,12 +25,22 @@ from scipy import ndimage
 from nilearn.image import resample_img
 from nilearn.masking import apply_mask
 
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)","Matthew Sacchet (msacchet@stanford.edu)"]
+__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
 __version__ = "$Revision: 1.0 $"
 __date__ = "$Date: 2011/09/09 $"
 __license__ = "Python"
 
 
+"""Determines if input is a nifti header or a string path to a file, returns nothing if not either"""
+def determine_read_data(input_image):
+  # If we have a filename, we need to load it
+  if isinstance(input_image,str):
+    return True
+  # Or we can take a nibabel nifti1 image
+  elif isinstance(input_image,nibabel.nifti1.Nifti1Image):
+    return False
+  else:
+    print "Please provide an input_image filepath OR nibabel.nifti1.Nifti1Image object!"
 
 """Resamples image voxels to different voxel size, should be a tuple with three values
 returns a nibabel.nifti1.Nifti1Image"""
@@ -38,64 +48,81 @@ def resize_image(input_image,voxel_dimension):
   if len(voxel_dimension) != 3:
     print "Please specify a list of three voxel sizes, e.g. (3,3,3)"
     return
-
-  # If we have a filename, we need to load it
-  if isinstance(input_image,str):
+  if determine_read_data(input_image):
     header = nibabel.load(input_image)
-  # Or we can take a nibabel nifti1 image
-  elif isinstance(input_image,nibabel.nifti1.Nifti1Image):
-    header = input_image
   else:
-    print "Please provide an input_image filepath OR nibabel.nifti1.Nifti1Image object!"
-    return
+    header = input_image
   voxel_dimension = tuple(voxel_dimension)
   target_affine = np.diag(voxel_dimension)
   resampled = resample_img(header, target_affine=target_affine)
-
-
-"""A wrapper for spatial_normalize_image - returns a pandas dataframe of image voxels normalized (resampled) to another (assuming standard) space"""
-def spatial_normalize_images(input_images,standard):
+  return resampled
+  
+"""A wrapper for spatial_normalize_image - returns a pandas dataframe of image voxels normalized (resampled) to another (assuming standard) space.  If zscore is specified to true, the image is also
+converted to Zscores at the specified threshold"""
+def spatial_normalize_images(input_images,standard,zscore=False,threshold=None):
   image_matrix = []
   for mr in input_images:
+    if zscore:
+      mr = normalize_image_zscore(mr,threshold)
     transformed_image = spatial_normalize_image(mr,standard)
-    image_matrix.append(transformed_image["data"])
-  df = pd.DataFrame(image_matrix,columns=input_images)
+    image_matrix.append(transformed_image.reshape((-1)))
+  df = pd.DataFrame(np.transpose(image_matrix),columns=input_images)
   return df
 
 """Transform a single image into another space (likely a standard we are assuming both in MNI space!)"""
 def spatial_normalize_image(image,standard):
-   standard = read_image(standard)
-   image = read_image(image)
-   header = resample_img(image["header"], target_affine=standard["affine"],target_shape=standard["shape"])
+   # Make sure we have nibabel image objects
+   if determine_read_data(standard):
+     standard = read_image(standard)
+   if determine_read_data(image):
+     image = read_image(image)
+   header = resample_img(image, target_affine=standard.get_affine(),target_shape=standard.shape[:3])
    transformed = header.get_data()
-   return {"data":transformed,"mask":transformed > 1e-13,"shape":header.shape[:3],"affine":header.get_affine(),"file":image,"header":header}
+   return transformed
 
 """Returns an image in the Zscore space, thresholded at threshold"""
-def normalize_image_zscore(header,threshold=None):
-  data = header.get_data()
+def normalize_image_zscore(image,threshold=None):
+  if determine_read_data(image):
+    image = read_image(image)
+  data = image.get_data()
   Z = (data - np.mean(data)) / np.std(data)
   if threshold:
     mask = Z < float(threshold)
     Z[mask] = float(0)
     # Return the new header object
-  return nibabel.Nifti1Image(Z,header.get_affine())
+  return nibabel.Nifti1Image(Z,image.get_affine())
 
-"""Reads in image, returns image values and mask"""
+"""Returns a numpy array (True/False) image mask greater than specified threshold"""
+def make_mask_from_image(image_file,threshold=1e-13):
+  if determine_read_data(image_file):
+    image_file = read_image(image_file)
+  mask = image_file.get_data() > float(threshold)
+  return mask
+
+"""Reads in image, returns nibabel object"""
 def read_image(image_file):
     print "Loading image %s" %(image_file)
     mr = nibabel.load(image_file)
-    affine = mr.get_affine()
-    shape = mr.shape[:3]
-    data = mr.get_data()
-    mask = data > 1e-13
-    mr = {"data":data,"mask":mask,"shape":shape,"affine":affine,"file":image_file,"header":mr}
     return mr
+
+"""Returns subset of images with a particular 4th dimension"""
+def files_get_3d_list(files):
+  threed_list = []
+  for mr in files:
+    image = read_image(mr)
+    if len(image.shape) == 3:
+      threed_list.append(mr)
+    elif len(image.shape) == 4:
+      if image.shape[3] == 1:
+        threed_list.append(mr)
+  return threed_list
 
 # Atlas Summary Object -------------------------------------------------------------------
 """Atlas - internal object for storing atlas labels and regions, for use to summarize the 
 regional patterns of different spatial maps"""
 class Atlas:
   def __init__(self,atlas_lookup="data/atlas/atlasFeatures.tab",atlas_directory="data/atlas",standard="data/standard/MNI152lin_T1_2mm_brain_mask.nii.gz"):
+    self.standard_file = standard
     self.read_standard(standard)
     self.read_atlas_images(atlas_directory,atlas_lookup)
 
@@ -115,7 +142,7 @@ class Atlas:
     for image in unique_images:
       print "Reading atlas image %s" % (image)
       full_path = os.path.abspath("%s/%s" % (atlas_directory,image))
-      img = spatial_normalize_image(full_path,self.standard["file"])
+      img = spatial_normalize_image(full_path,self.standard_file)
       self.atlas_data[image] = img
 
   """Get voxel count feature vector for one or more images against all of atlas labels
@@ -130,7 +157,7 @@ If normalize_threshold is specified, will convert image to Z score, and threshol
       header = nibabel.load(full_path)
       # Only do for single timepoint images for now
       if len(header.shape) == 3:
-        header = resample_img(header, target_affine=self.standard["affine"],target_shape=self.standard["shape"])
+        header = resample_img(header, target_affine=self.standard.get_affine(),target_shape=self.standard.shape[:3])
         # If the user hasn't specified a normalize_threshold, just take image data as is'
         if normalize_threshold:
           header = normalize_image_zscore(header,normalize_threshold)
@@ -144,9 +171,10 @@ If normalize_threshold is specified, will convert image to Z score, and threshol
             region_label = row[1]["regionName"]
             feature_labels.append("%s_%s" % ( atlas_image, region_label ))
             # Create the region mask equal to the voxel value for the label
-            region_mask = image_data["data"] == voxel_value
+            region_mask = image_data == voxel_value
             # Add the standard mask
-            region_mask = np.logical_and(region_mask, self.standard["mask"])
+            standard_mask = make_mask_from_image(self.standard)
+            region_mask = np.logical_and(region_mask, standard_mask)
             voxel_count = np.sum(np.logical_and(region_mask, img).astype(np.int))
             feature_vector.append(int(voxel_count))
         feature_vectors.append(feature_vector)

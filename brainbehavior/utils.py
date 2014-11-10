@@ -16,7 +16,7 @@ SAMPLE USAGE: Please see README included with package
 
 """
 
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)","Matthew Sacchet (msacchet@stanford.edu)"]
+__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
 __version__ = "$Revision: 1.0 $"
 __date__ = "$Date: 2011/09/09 $"
 __license__ = "Python"
