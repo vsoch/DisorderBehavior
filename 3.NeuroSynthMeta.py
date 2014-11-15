@@ -12,8 +12,8 @@ from utils import read_pmid_groups
 # Create a NeuroSynth Object to perform the meta analysis
 ns = nsy.NeuroSynth(8000)
 # Or load from file with the decode object created for 3000 terms!
+pickle.dump(open("data/8000terms/ns.pkl","rb"))
 # ns = pickle.load( open( "/scratch/users/vsochat/DATA/BRAINBEHAVIOR/ns.pkl", "rb" ) )
-# ns = pickle.load( open( "data/8000terms/ns.pkl", "rb" ) )
 
 # Read in the groups (these are)
 groups = read_pmid_groups("../output/disorder_pid_groups_thresh15.v3.txt")

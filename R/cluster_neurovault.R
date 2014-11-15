@@ -1,7 +1,7 @@
 setwd("/home/vanessa/Documents/Work/BRAINBEHAVIOR")
 
 # First let's summarize the voxel count data
-features = read.csv("regional_features.tsv",sep="\t",head=TRUE)
+features = read.csv("regional_features_nothresh.tsv",sep="\t",head=TRUE)
 
 # Get rid of empty regions
 features = features[,-which(colSums(features)==0)]
@@ -64,18 +64,96 @@ dev.off()
 #TODO: Dimensionality reduction on actual image matrix
 #TODO: more interesting labels for images!
 # First let's do dimensionality reduction of the Z score, thresholded > 1.96 images
-matrix = read.csv("neurovault_z1pt96.tsv",sep="\t",head=TRUE)
+matrix = read.csv("neurovault_z_nothresh.tsv",sep="\t",head=TRUE)
 matrix = t(matrix)
 
-# Here we have images in rows, calculate distance matrix
-disty = dist(matrix)
+# let's calculate a similarity score to our SOM matrix
+load ("/home/vanessa/Documents/Work/BRAINBEHAVIOR/brainMap.Rda")
 
-# Fit MDS model for 2 dimensions
-fit = cmdscale(disty,eig=TRUE, k=2) 
+# For each image in neurovault, calculate the pearson correlation to each node
+nvsim = array(dim=c(nrow(matrix),nrow(brainMap$som$codes)))
+for (nv in 1:nrow(nvsim)){
+  cat(nv,"of",nrow(nvsim),"\n")
+  nvimage = matrix[nv,]
+  for (bm in 1:ncol(nvsim)) {
+    node = brainMap$som$codes[bm,]
+    nvsim[nv,bm] = cor(nvimage,node,method="pearson")
+  }
+}
 
-# plot solution
-x = fit$points[,1]
-y = fit$points[,2]
-labels = gsub("X.home.vanessa.Documents.Work.BRAINBEHAVIOR.mrs.|.nii.gz","",rownames(matrix))
-plot(x, y, xlab="Coordinate 1", ylab="Coordinate 2",main="MDS of NeuroVault")
-text(x, y, labels = labels, cex=.7) 
+library("RColorBrewer")
+rbPal <- colorRampPalette(brewer.pal(8,"YlOrRd"))
+
+# Set NA to zero
+nvsim[is.na(nvsim)] = 0
+# Scale to max and min neurovault values
+maxy = max(nvsim)
+miny = min(nvsim)
+
+# Now let's plot the som for an image:
+for (nv in 1:nrow(nvsim)){
+  # Here are 506 match scores
+  dat = nvsim[nv,]
+  dat = c(miny,as.numeric(dat),maxy)
+  color = rbPal(10)[as.numeric(cut(dat,breaks=10))]
+  color = color[-c(1,508)]
+  png(file=paste("img/som/",rownames(nvsim)[nv],".png",sep=""),width=14,height=14,units="in",res=300) 
+ plot(brainMap$som$grid$pts,main=paste("Brainmap",rownames(nvsim)[nv]),col=color,xlab="Meta Brain Map Nodes",ylab="Meta Brain Map Nodes",pch=15,cex=8)
+  text(brainMap$som$grid$pts,brainMap$labels,cex=.5)   
+  dev.off()
+}
+
+# MATCHING TO NEUROSYNTH TOPIC MAPS
+# We removed / filtered out the NA maps.
+matrix = read.csv("nv2nsy_pearson.tsv",sep="\t",head=TRUE)
+matrix[is.na(matrix)] = 0
+matrix = matrix[,-which(colSums(matrix)==0)]
+
+source("/home/vanessa/Documents/Dropbox/Code/R/DNS/functions_quest_analysis.R")
+library(qgraph)
+library(psych)
+library(pheatmap)
+library(nFactors)
+library(Hmisc)
+
+# Simple heatmap
+png(file="../../img/nv2topics.png",width=14,height=14,units="in",res=300) 
+heatmap(as.matrix(matrix),main="NeuroVault Imgages to NeuroSynth Topics")
+dev.off()
+
+# Better heatmap
+colnames(matrix) = gsub("X.home.vanessa.Documents.Work.BRAINBEHAVIOR.mrs.","",colnames(matrix))
+png(file="../../img/nv2topicsHeatmap.png",width=20,height=10,units="in",res=300) 
+pheatmap(matrix)
+dev.off()
+
+# Get rid of column labels
+colnames(matrix) = NA
+png(file="../../img/nv2topicsHeatmapDetail.png",width=20,height=10,units="in",res=300) 
+pheatmap(matrix)
+dev.off()
+
+# Now, for one image, show 
+library("RColorBrewer")
+rbPal <- colorRampPalette(brewer.pal(8,"YlOrRd"))
+
+# Set NA to zero
+nvsim[is.na(nvsim)] = 0
+# Scale to max and min neurovault values
+maxy = max(nvsim)
+miny = min(nvsim)
+
+# Now let's plot the som for an image:
+for (nv in 1:nrow(nvsim)){
+  # Here are 506 match scores
+  dat = nvsim[nv,]
+  dat = c(miny,as.numeric(dat),maxy)
+  color = rbPal(10)[as.numeric(cut(dat,breaks=10))]
+  color = color[-c(1,508)]
+  png(file=paste("img/som/",rownames(nvsim)[nv],".png",sep=""),width=14,height=14,units="in",res=300) 
+ plot(brainMap$som$grid$pts,main=paste("Brainmap",rownames(nvsim)[nv]),col=color,xlab="Meta Brain Map Nodes",ylab="Meta Brain Map Nodes",pch=15,cex=8)
+  text(brainMap$som$grid$pts,brainMap$labels,cex=.5)   
+  dev.off()
+}
+
+# NEXT: I want strategy to see ONE map. How does it compare?

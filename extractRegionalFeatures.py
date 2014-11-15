@@ -13,9 +13,8 @@ atlas = utils.Atlas()
 files = glob.glob("/home/vanessa/Documents/Work/BRAINBEHAVIOR/mrs/*.nii.gz")
 output_file = "/home/vanessa/Documents/Work/BRAINBEHAVIOR/regional_features.tsv"
 
-# STEP 1: Extract regional voxel features for all NeuroVault images at a Z score > 1.96 ---------
-threshold = 1.96
-df = atlas.count_voxels_in_atlas(mrs=files,output_file=output_file,normalize_threshold=threshold)
+# STEP 1: Extract regional voxel features for all NeuroVault images ---------
+df = atlas.count_voxels_in_atlas(mrs=files,output_file=output_file)
 
 # TODO: Make plots of results (or I possibly want to just export data to database --> d3)
 #output_image = "/home/vanessa/Desktop/regional_voxel_counts.png"
@@ -30,6 +29,6 @@ standard8mm = utils.resize_image(standard,[8,8,8])
 threed_files = utils.files_get_3d_list(files)
 # Now get a matrix of image files in this space!
 matrix = utils.spatial_normalize_images(threed_files,standard8mm,zscore=True,threshold=1.96)
-matrix.to_csv("/home/vanessa/Documents/Work/BRAINBEHAVIOR/neurovault_z1pt96.tsv",sep="\t")
+matrix.to_csv("/home/vanessa/Documents/Work/BRAINBEHAVIOR/neurovault_z_nothresh.tsv",sep="\t")
 
 

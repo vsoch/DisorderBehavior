@@ -31,6 +31,7 @@ __date__ = "$Date: 2011/09/09 $"
 __license__ = "Python"
 
 
+# Single File Normalization and Resampling ----------------------------------------------------------
 """Determines if input is a nifti header or a string path to a file, returns nothing if not either"""
 def determine_read_data(input_image):
   # If we have a filename, we need to load it
@@ -117,6 +118,24 @@ def files_get_3d_list(files):
         threed_list.append(mr)
   return threed_list
 
+
+# Similarity Metrics for Image matrices --------------------------------------------------
+"""Calculate correlation of two data frames, method can be pearson, spearman, or kendall"""
+def correlation(matrix_to_match,matrix_reference,method="pearson",min_elements_in_common=1):
+
+  # Check to make sure we have the same number of voxels (rows in matrices)
+  if matrix_to_match.shape[0] != matrix_reference.shape[0]:
+    print "Error, mismatching number of voxels, %s and %s" % (matrix_to_match.shape[0],matrix_reference.shape[0])
+    return
+
+  # We can actually use pandas to do a pearson correlation, let's first combine into one df
+  matrix = pd.concat([matrix_to_match,matrix_reference], axis=1)
+  corr = matrix.corr(method=method, min_periods=min_elements_in_common)
+
+  # Now just grab the comparisons we are interested in
+  final_matrix = corr.ix[matrix_reference.columns,matrix_to_match.columns] 
+  return final_matrix
+
 # Atlas Summary Object -------------------------------------------------------------------
 """Atlas - internal object for storing atlas labels and regions, for use to summarize the 
 regional patterns of different spatial maps"""
@@ -161,6 +180,8 @@ If normalize_threshold is specified, will convert image to Z score, and threshol
         # If the user hasn't specified a normalize_threshold, just take image data as is'
         if normalize_threshold:
           header = normalize_image_zscore(header,normalize_threshold)
+        else:
+          header = normalize_image_zscore(header)
         img = header.get_data()
         # For each label in the atlas, get a voxel count
         for atlas_image,image_data in self.atlas_data.iteritems():
