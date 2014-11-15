@@ -157,3 +157,4 @@ for (nv in 1:nrow(nvsim)){
 }
 
 # NEXT: I want strategy to see ONE map. How does it compare?
+onemap = matrix[,1]
