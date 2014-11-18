@@ -28,6 +28,7 @@ import re
 import sys
 import os.path
 import pandas as pd
+import os
 
 __author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
 __version__ = "$Revision: 1.0 $"
@@ -60,9 +61,11 @@ class Pubmed:
     # Now for each, assemble the URL 
     for row in subset.iterrows():
       url = "ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/%s" % (row[1]["URL"])
-      download_file = "%s/%s" %(download_folder,os.path.basename(row[1]["URL"]))
-      urllib.urlretrieve(url, download_file)
-
+      print "Downloading %s" % (url)
+      download_place = "%s/" %(download_folder)
+      if not os.path.isfile("%s%s" %(download_place,row[1]["URL"])): 
+        os.system("wget \"%s\" -P %s" % (url,download_place))
+        
 
   """Read articles from pubmed"""
   def getArticle(self,id1):

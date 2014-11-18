@@ -2,6 +2,7 @@
 
 # This script will launch instances of download_pubmed_muhaha.py
 
+import os
 import pubmed
 from utils import read_pmid_groups
 
@@ -22,7 +23,7 @@ start = 0
 iters = len(pc_ids)/100
 
 # Prepare and submit a job for each
-for i in range(1,5000):
+for i in range(0,5000):
   start = i*100
   if i != iters:
     end = start + 100
@@ -34,7 +35,7 @@ for i in range(1,5000):
   filey.writelines("#SBATCH --job-name=%s\n" %(jobname))
   filey.writelines("#SBATCH --output=.out/%s.out\n" %(jobname))
   filey.writelines("#SBATCH --error=.out/%s.err\n" %(jobname))
-  filey.writelines("#SBATCH --time=1-00:00\n")
+  filey.writelines("#SBATCH --time=2-00:00\n")
   filey.writelines("#SBATCH --mem=12000\n")
   # Usage : download_pubmed_muhaha.py start end download_folder
   filey.writelines("/home/vsochat/python-lapack-blas/bin/python /home/vsochat/SCRIPT/python/brainbehavior/download_pubmed_muhaha.py %s %s %s %s\n" % (start,end,download_folder,email))
