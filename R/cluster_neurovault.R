@@ -105,7 +105,7 @@ for (nv in 1:nrow(nvsim)){
 
 # MATCHING TO NEUROSYNTH TOPIC MAPS
 # We removed / filtered out the NA maps.
-matrix = read.csv("nv2nsy_pearson.tsv",sep="\t",head=TRUE)
+matrix = read.csv("/home/vanessa/Documents/Dropbox/Code/Python/BrainBehavior/brainbehavior/data/nv2nsy_pearson.tsv",sep="\t",head=TRUE)
 matrix[is.na(matrix)] = 0
 matrix = matrix[,-which(colSums(matrix)==0)]
 
@@ -157,4 +157,28 @@ for (nv in 1:nrow(nvsim)){
 }
 
 # NEXT: I want strategy to see ONE map. How does it compare?
-onemap = matrix[,1]
+library("RColorBrewer")
+onemap = matrix[,311]
+names(onemap) = rownames(matrix)
+# Create color scale between 0 and 1
+# This is our color palette
+#palette = colorRampPalette(brewer.pal(8,"YlOrRd"))
+tmp = sort(onemap,decreasing=TRUE)
+palette <- colorRampPalette(c("blue","red"))(8)
+# We need to scale the values between min and max of data
+tmp = c(min(matrix),tmp,max(matrix))
+
+#This adds a column of color values
+# based on the y values
+color = palette[as.numeric(cut(tmp,breaks = 8))]
+color = color[-c(1,length(color))]
+
+png(filename = "../../img/SingleMapExample.png",width = 900, height = 300, units = "px", pointsize = 12)
+bp = barplot(sort(onemap,decreasing=TRUE),ylim=c(min(matrix),max(matrix)),main=paste("What concepts does a map represent"),col=color,las=2,xlab="",ylab="correlation")
+# Now let's show the average correlations for the entire database
+featuremeans = apply(matrix,1,mean)
+# Put in the same order
+featuremeans = featuremeans[names(sort(onemap,decreasing=TRUE))]
+lines(x=bp,y=featuremeans,col="turquoise",lty=2,lwd=2)
+legend(40,.6, c("Database Mean Correlation"),lty=c(1,1),lwd=c(2.5,2.5),col=c("turquoise"),bty="n")
+dev.off()

@@ -3,31 +3,24 @@
 # This script will read in the RDoC matrix, NeuroSynth ids, and attempt to search for the terms in the abstract.  Each paper will have a vector of features to assess the probability
 # of a paper belonging to a particular concept group.
 
-import pubmed as pm
+import pubmed
+from utils import read_pmid_groups
 
 # First we need to download full article text
 # Create a pubmed object
 email = "vsochat@stanford.edu"
-pub = pm.Pubmed(email)
-pub.loadPubmed()
+pm = pubmed.Pubmed(email)
 
 # Get our list of ids for each disorder
-filey = open("data/disorder_pid_groups_thresh15.v3.txt","r")
-groups = dict()
-for f in filey.readlines():
-  group = f.strip("\n").split("\t")
-  name = group.pop(0)
-  groups[name] = group
+# Note: can't use NeuroSynth to start, these are PMID and not pubmed central ID
+# Should have function to look up these ids - just use those in database for now
+# groups = read_pmid_groups("../output/disorder_pid_groups_thresh15.v3.txt")
 
-filey.close()
+# Get pubmed ids for articles in database
+pc_ids = pub.get_pubmed_central_ids()
 
-# If we need to download the articles
-allpmids = []
-for g,pmids in groups.iteritems():
-  allpmids = allpmids + pmids
-
-# Download the articles
-pub.downloadFull(allpmids)
+# Download the articles?
+pub.download_articles(pc_ids)
 
 # Create a CognitiveAtlas object, get disorders
 ca = BB.CognitiveAtlas()

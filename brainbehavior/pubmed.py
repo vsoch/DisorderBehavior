@@ -16,6 +16,7 @@ SAMPLE USAGE: Please see README included with package
 
 """
 
+import urllib
 import numpy as np
 import string
 import urllib2
@@ -26,8 +27,9 @@ from nltk import word_tokenize
 import re
 import sys
 import os.path
+import pandas as pd
 
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)","Matthew Sacchet (msacchet@stanford.edu)"]
+__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
 __version__ = "$Revision: 1.0 $"
 __date__ = "$Date: 2011/09/09 $"
 __license__ = "Python"
@@ -36,18 +38,30 @@ __license__ = "Python"
 # These functions will find papers of interest to crosslist with Neurosynth
 class Pubmed:
 
+  """Load pubmed FTP info from pickle"""
   def __init__(self,email):
     self.email = email
+    print "Downloading latest version of pubmed central ftp lookup..."
+    self.ftp = pd.read_csv("ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/file_list.txt",skiprows=1,sep="\t",header=None)
+    self.ftp.columns = ["URL","JOURNAL","PMCID"]
 
-  """Load pubmed FTP info from pickle"""
-  def self.loadPubmed(self):
-    self.ftp = pd.io.pickle.read_pickle("data/pubmed/pubmed.pkl")
+  def get_pubmed_cental_ids(self):
+    return list(self.ftp["PMCID"])
 
-  """Download full text"""
-  # STOPPED HERE - this needs to be a string
-  def loadPubmed(self,pmids):
-    all_ids = [str(x) for x in self.ftp.PMID]
-    valid_ids = [p for p in pmid if p in all_ids]
+  """Download full text of articles with pubmed ids pmids to folder"""
+  def download_pubmed(self,pmids,download_folder):
+    # pmids = [float(x) for x in pmids]
+    # Filter ftp matrix to those ids
+    # I couldn't figure out how to do this in one line
+    subset = pd.DataFrame(columns=self.ftp.columns)
+    for p in pmids:
+      row = self.ftp.ix[self.ftp.index[self.ftp.PMCID == p]]
+      subset = subset.append(row)
+    # Now for each, assemble the URL 
+    for row in subset.iterrows():
+      url = "ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/%s" % (row[1]["URL"])
+      download_file = "%s/%s" %(download_folder,os.path.basename(row[1]["URL"]))
+      urllib.urlretrieve(url, download_file)
 
 
   """Read articles from pubmed"""
