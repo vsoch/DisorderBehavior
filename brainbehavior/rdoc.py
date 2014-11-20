@@ -1,0 +1,162 @@
+#!/usr/bin/env python
+
+"""
+
+rdoc: part of the brainbehavior python package to work with rdoc matrix
+
+BrainBehavior: This module will work with three databases that 
+combined can make inferences about disorders and behaviors:
+
+NeuroVault: functional and structural group analyses
+Cognitive Atlas: ontology of cognitive concepts, tasks, disorder, collections
+NeuroSynth: mining literature for behavioral concepts to produce brain maps
+
+SAMPLE USAGE: Please see README included with package
+
+rdoc:   Methods for working with on and offline pubmed data
+       .get_xml_text:  Get raw text from pubmed xml file.  Uses:
+       ._recursiveTextExtract: pull text from all xml elements
+       .get_construct: 
+       .find_construct: Searches for rdoc features in paper
+       .extract_sentences: return dictionary ["methodname","sentence it's in!'"]
+
+"""
+
+import re
+from lxml import etree
+import pandas as pd
+import tarfile
+import os
+
+__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
+__version__ = "$Revision: 1.0 $"
+__date__ = "$Date: 2011/09/09 $"
+__license__ = "Python"
+
+
+# RDoC ---------------------------------------------------------------------------
+class rdoc:
+
+    '''Construct file should be tab separated with the following fields
+    ID\tUNIT\tFEATURE\tDOMAIN\tCONSTRUCT\tSUBCONSTRUCT\tSEARCHTERM'''
+    def __init__(self,construct_file="data/rdoc/negative_valence.csv"):
+      self.construct_file = construct_file
+      self.read_construct() 
+
+    '''Read in rdoc construct matrix'''
+    def read_construct(self):
+      self.features = pd.read_csv(self.construct_file,sep="\t")
+
+    '''Extract construct will determine filetype (xml or tar.gz) for one or more files and extract appropraitely'''
+    def extract_construct(self,papers):
+    
+      # Let's create a data frame to hold the featres
+      feature_matrix = pd.DataFrame(columns=self.features["ID"])
+      matches_matrix = pd.DataFrame(columns=self.features["ID"])
+      pmids = []
+
+      for paper in papers:
+        # If there is an error with a paper, we don't want it to 
+        # end the whole process! Just don't add it.
+        try:
+          if re.search("[.tar.gz]",paper):
+            raw = self.extract_xml_compressed(paper)
+          else:
+            raw = self.read_xml(paper)
+          data = etree.XML(raw)
+
+          # For now, parse the entire article - may want to eventually limit scope
+          # Get text - recursively go through elements
+          parsed = self._recursive_text_extract(data)
+          pmid = parsed[0]      
+          text = parsed[1]
+          pmids.append(pmid)
+
+          # Now extract construct features from text
+          hits = self.search_for_features(text)
+          scores = hits[0]  # list
+          matches = hits[1] # dict
+          feature_matrix.loc[feature_matrix.shape[0]] = scores
+          matches_matrix.loc[matches_matrix.shape[0]] = matches.values() 
+        except:
+          print "XML parsing error with paper %s" % (paper)
+        
+      # Add pmid to matrices
+      feature_matrix["PMID"] = pmids
+      matches_matrix["PMID"] = pmids
+      result = {"features":feature_matrix,"matches":matches_matrix}
+      return result
+
+    '''Return text for xml tree element'''
+    def _recursive_text_extract(self,xmltree):
+      text = []
+      queue = []
+      article_ids = []
+      for elem in reversed(list(xmltree)):
+        queue.append(elem)
+      
+      while (len(queue) > 0):
+        current = queue.pop()
+        if current.text != None:
+          text.append(current.text)
+        if "pub-id-type" in current.keys():
+          article_ids.append(current.text)
+        if len(list(current)) > 0:
+          for elem in reversed(list(current)):
+            queue.append(elem)
+
+      # The pubmed id is the first, so it will be last in the list
+      pmid = article_ids[0]      
+      return (pmid,text)
+
+    '''Read XML from compressed file'''
+    def extract_xml_compressed(self,paper): 
+      tar = tarfile.open(paper, 'r:gz')
+      for tar_info in tar:
+        if os.path.splitext(tar_info.name)[1] == ".nxml":
+          print "Extracting text from %s" %(tar_info.name)
+          file_object = tar.extractfile(tar_info)
+          return file_object.read().replace('\n', '')
+          
+
+    '''Extract text from xml or nxml file directory'''
+    def read_xml(self,xml):
+      with open (xml, "r") as myfile:
+        return myfile.read().replace('\n', '')
+      
+
+    '''Match features to sentences in the xml text'''
+    def search_for_features(self,text):
+      matches = dict()
+      # Make a list to hold text matches and scores
+      scores = []
+      print "Searching article for construct features..."
+      fulltext = " ".join(text).lower()
+      
+      for f in self.features.iterrows():
+        matchlist = list()
+        feature = f[1]["SEARCHTERM"].lower()
+        feature_id = f[1]["ID"]
+        expression = re.compile(feature)
+        match = expression.search(fulltext)
+        if match:
+          print "Found match for " + f[1]["SEARCHTERM"] + "!"
+          # Extract the gist - 10 words before and after
+          start = match.start() - 10
+          end = match.start() + 10
+          if start < 0: start = 0
+          if end > len(fulltext): end = len(fulltext)
+          matchlist.append(fulltext[start:end])
+        matches[feature_id] = matchlist
+        # We will just append a raw count for now - should probably normalize by
+        # the length of the article, etc.
+        scores.append(len(matchlist))
+      return (scores,matches)  
+      
+
+# MAIN ----------------------------------------------------------------------------------
+def main():
+    print __doc__
+
+if __name__ == "__main__":
+    main()

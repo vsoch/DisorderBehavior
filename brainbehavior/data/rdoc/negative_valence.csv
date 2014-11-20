@@ -1,0 +1,196 @@
+ID	UNIT	FEATURE	DOMAIN	CONSTRUCT	SUBCONSTRUCT	SEARCHTERM
+nv.fear.gene1	genes	BDNF	Negative Valence Systems	Acute threat (fear)		\bBDNF\b|brain derived neurotropic factor
+nv.fear.gene2	genes	5HT/5HTRs	Negative Valence Systems	Acute threat (fear)		\b5HTR?\b
+nv.fear.gene3	genes	CRF	Negative Valence Systems	Acute threat (fear)		\bCRF\b
+nv.fear.gene4	genes	FKB5	Negative Valence Systems	Acute threat (fear)		\bFKB5\b
+nv.fear.gene5	genes	GABAARs	Negative Valence Systems	Acute threat (fear)		\bGABAAR\b
+nv.fear.gene6	genes	Glutamate system	Negative Valence Systems	Acute threat (fear)		glutamate
+nv.fear.gene7	genes	NMDARs	Negative Valence Systems	Acute threat (fear)		\bNMDAR\b
+nv.fear.gene8	genes	Opiod system	Negative Valence Systems	Acute threat (fear)		opioid
+nv.fear.gene9	genes	COMT	Negative Valence Systems	Acute threat (fear)		\bCOMT\b
+nv.fear.gene10	genes	Cannabinoid system	Negative Valence Systems	Acute threat (fear)		cannabinoid
+nv.fear.gene11	genes	Dopamine	Negative Valence Systems	Acute threat (fear)		dopamine
+nv.fear.gene12	genes	DAT	Negative Valence Systems	Acute threat (fear)		cam kinase|cam-kinase
+nv.fear.gene13	genes	Cam kinase	Negative Valence Systems	Acute threat (fear)		cam kinase
+nv.fear.gene14	genes	MAP kinase	Negative Valence Systems	Acute threat (fear)		MAP kinase|mitogen-activated protein kinase|mitogen activated protein kinase
+nv.fear.gene15	genes	PI-3 kinase	Negative Valence Systems	Acute threat (fear)		PI-3 kinase|phosphoinositide 3-kinase
+nv.fear.gene16	genes	PKA	Negative Valence Systems	Acute threat (fear)		\bPKA\b|protein kinase A
+nv.fear.gene17	genes	PKC	Negative Valence Systems	Acute threat (fear)		\bPKC\b|protein kinase C
+nv.fear.gene18	genes	Acetylcholine	Negative Valence Systems	Acute threat (fear)		acetylcholine
+nv.fear.gene19	genes	Norepinephrine	Negative Valence Systems	Acute threat (fear)		norepinephrine
+nv.fear.gene20	genes	Strathmin	Negative Valence Systems	Acute threat (fear)		strathmin
+nv.fear.gene21	genes	Pkap	Negative Valence Systems	Acute threat (fear)		Pkap
+nv.fear.gene22	genes	TRBC5	Negative Valence Systems	Acute threat (fear)		\bTRBC5\b
+nv.fear.mole1	molecules	NMDARs	Negative Valence Systems	Acute threat (fear)		\bNMDAR\b
+nv.fear.mole2	molecules	glutamate	Negative Valence Systems	Acute threat (fear)		glutamate
+nv.fear.mole3	molecules	dopamine	Negative Valence Systems	Acute threat (fear)		dopamine
+nv.fear.mole4	molecules	serotonin	Negative Valence Systems	Acute threat (fear)		serotonin
+nv.fear.mole5	molecules	BDNF	Negative Valence Systems	Acute threat (fear)		\bBDNF\b|brain derived neurotropic factor
+nv.fear.mole6	molecules	GABA	Negative Valence Systems	Acute threat (fear)		\bGABA\b
+nv.fear.mole7	molecules	Cortisol/ Corticosterone	Negative Valence Systems	Acute threat (fear)		cortisol|corticosterone
+nv.fear.mole8	molecules	Endogenous cannabinoids	Negative Valence Systems	Acute threat (fear)		endogenous cannabinoids
+nv.fear.mole9	molecules	orexin	Negative Valence Systems	Acute threat (fear)		orexin|hypocretin
+nv.fear.mole10	molecules	NPY	Negative Valence Systems	Acute threat (fear)		\bNPY\b|neuropeptide Y/s
+nv.fear.mole11	molecules	CRF	Negative Valence Systems	Acute threat (fear)		\bCRF\b
+nv.fear.mole12	molecules	CRF family	Negative Valence Systems	Acute threat (fear)		CRF family|\bCRF\b
+nv.fear.mole13	molecules	FGF2	Negative Valence Systems	Acute threat (fear)		\bFGF2\b
+nv.fear.mole14	molecules	Oxytocin	Negative Valence Systems	Acute threat (fear)		oxytocin
+nv.fear.mole15	molecules	Vasopressin	Negative Valence Systems	Acute threat (fear)		\bGABA\b
+nv.fear.mole16	molecules	CCK	Negative Valence Systems	Acute threat (fear)		\bCCK\b
+nv.fear.mole17	molecules	Neuropeptide S	Negative Valence Systems	Acute threat (fear)		neuropeptide \bs\b
+nv.fear.mole18	molecules	Neurosteroids	Negative Valence Systems	Acute threat (fear)		neurosteroid
+nv.fear.cell1	cells	neurons	Negative Valence Systems	Acute threat (fear)		neurons
+nv.fear.cell2	cells	glia	Negative Valence Systems	Acute threat (fear)		glia
+nv.fear.cell3	cells	pyramidal cells	Negative Valence Systems	Acute threat (fear)		pyramidal cells
+nv.fear.cell4	cells	GABAergic cells	Negative Valence Systems	Acute threat (fear)		GABAergic cells|GABAergic
+nv.fear.circ1	circuits	Central Nucleus	Negative Valence Systems	Acute threat (fear)		central nucleus
+nv.fear.circ2	circuits	BasAmyg	Negative Valence Systems	Acute threat (fear)		BasAmyg|basal amygdala
+nv.fear.circ3	circuits	LatAmyg	Negative Valence Systems	Acute threat (fear)		LatAmyg|lateral amygdala
+nv.fear.circ4	circuits	vPAG	Negative Valence Systems	Acute threat (fear)		\bvPAG\b|ventral periaqueductal
+nv.fear.circ5	circuits	dPAG	Negative Valence Systems	Acute threat (fear)		\bdPAG\b|dorsal periaqueductal
+nv.fear.circ6	circuits	v-hippocampus (post)	Negative Valence Systems	Acute threat (fear)		v-hippocampus (post)|ventral hippocampus|posterior hippocampus
+nv.fear.circ7	circuits	d-hippocampus (ant)	Negative Valence Systems	Acute threat (fear)		d-hippocampus (ant)|anterior hippocampus|dorsal hippocampus
+nv.fear.circ8	circuits	latPFC/insula	Negative Valence Systems	Acute threat (fear)		latPFC|insula|lateral prefrontal cortex|lateral PFC
+nv.fear.circ9	circuits	vmPFC (il)	Negative Valence Systems	Acute threat (fear)		vmPFC (il)|ventro-medial pre-frontal cortex|vmPFC|ventral-medial prefrontal cortex
+nv.fear.circ10	circuits	dmPFC (pl)	Negative Valence Systems	Acute threat (fear)		dmPFC (pl)|dmPFC|dorsal-medial pre-frontal cortex|dorsal-medial prefrontal cortex
+nv.fear.circ11	circuits	OFC	Negative Valence Systems	Acute threat (fear)		\bOFC\b|orbitofrontal|orbito-frontal
+nv.fear.circ12	circuits	Hypothalamus	Negative Valence Systems	Acute threat (fear)		hypothalamus
+nv.fear.circ13	circuits	dorsal ACC	Negative Valence Systems	Acute threat (fear)		dorsal ACC|dorsal anterior cingulate cortex
+nv.fear.circ14	circuits	rostral/vent ACC	Negative Valence Systems	Acute threat (fear)		rostral ACC|ventral ACC|anterior cingulate cortex
+nv.fear.circ15	circuits	Medial Amygd	Negative Valence Systems	Acute threat (fear)		medial amygd
+nv.fear.circ16	circuits	PAG	Negative Valence Systems	Acute threat (fear)		\bPAG\b|periaqueductal
+nv.fear.circ17	circuits	RPVM	Negative Valence Systems	Acute threat (fear)		\bRPVM\b
+nv.fear.circ18	circuits	Pons	Negative Valence Systems	Acute threat (fear)		\bpons\b
+nv.fear.circ19	circuits	autonomic nervous system	Negative Valence Systems	Acute threat (fear)		autonomic nervous system|autonomic
+nv.fear.circ20	circuits	insular cortex	Negative Valence Systems	Acute threat (fear)		insular cortex|insula
+nv.fear.circ21	circuits	LC	Negative Valence Systems	Acute threat (fear)		locus coeruleus
+nv.fear.phys1	physiology	Fear Potentiated Startle	Negative Valence Systems	Acute threat (fear)		fear|startle
+nv.fear.phys2	physiology	Context Startle	Negative Valence Systems	Acute threat (fear)		context|startle
+nv.fear.phys3	physiology	Skin Conductance	Negative Valence Systems	Acute threat (fear)		skin conductance|galvanic skin response|\bGSR\b
+nv.fear.phys4	physiology	Heart Rate	Negative Valence Systems	Acute threat (fear)		heart rate|heart rate
+nv.fear.phys5	physiology	EMG	Negative Valence Systems	Acute threat (fear)		\bEMG\b|electromyography 
+nv.fear.phys6	physiology	BP	Negative Valence Systems	Acute threat (fear)		blood pressure
+nv.fear.phys7	physiology	Eye Tracking	Negative Valence Systems	Acute threat (fear)		eye tracking|gaze tracking
+nv.fear.phys8	physiology	Response accuracy	Negative Valence Systems	Acute threat (fear)		response accuracy
+nv.fear.phys9	physiology	facial EMG	Negative Valence Systems	Acute threat (fear)		facial EMG|facial electromyography 
+nv.fear.phys10	physiology	Respiration	Negative Valence Systems	Acute threat (fear)		respiration|breathing
+nv.fear.phys11	physiology	pupillometry	Negative Valence Systems	Acute threat (fear)		pupillometry
+nv.fear.beha1	behavior	freezing	Negative Valence Systems	Acute threat (fear)		freezing behavior
+nv.fear.beha2	behavior	response time	Negative Valence Systems	Acute threat (fear)		response time
+nv.fear.beha3	behavior	avoidance	Negative Valence Systems	Acute threat (fear)		avoidance
+nv.fear.beha4	behavior	response inhibition	Negative Valence Systems	Acute threat (fear)		response inhibition
+nv.fear.beha5	behavior	open field	Negative Valence Systems	Acute threat (fear)		open field
+nv.fear.beha6	behavior	social approach	Negative Valence Systems	Acute threat (fear)		social approach
+nv.fear.beha7	behavior	analgesia	Negative Valence Systems	Acute threat (fear)		analgesia
+nv.fear.beha8	behavior	approach (early development)	Negative Valence Systems	Acute threat (fear)		early development
+nv.fear.beha9	behavior	risk assessment	Negative Valence Systems	Acute threat (fear)		risk assessment
+nv.fear.beha10	behavior	facial expressions	Negative Valence Systems	Acute threat (fear)		facial expression
+nv.fear.beha11	self reports	fear survey schedule	Negative Valence Systems	Acute threat (fear)		fear survey schedule|fear survey
+nv.fear.self1	self reports	BAI	Negative Valence Systems	Acute threat (fear)		\bBAI\b|beck anxiety (inventory)?
+nv.fear.self2	self reports	STAI	Negative Valence Systems	Acute threat (fear)		State-Trait Anxiety Inventory|state trait anxiety inventory|state-?trait|\bSTAI\b
+nv.fear.self3	self reports	SUDS	Negative Valence Systems	Acute threat (fear)		\bSUDS\b
+nv.fear.self4	self reports	Fear Questionnaire	Negative Valence Systems	Acute threat (fear)		fear questionnaire
+nv.fear.self5	self reports	Trait Fear Inventory	Negative Valence Systems	Acute threat (fear)		trait fear inventory
+nv.fear.self6	self reports	Eilam Ethogram	Negative Valence Systems	Acute threat (fear)		eilam ethogram
+nv.fear.self7	self reports	Structured Diagnostic and Assessment scales	Negative Valence Systems	Acute threat (fear)		structured diagnostic and assessment scales
+nv.fear.self8	self reports	Albany Panic & Phobia	Negative Valence Systems	Acute threat (fear)		albany panic & phobia|albany panic and phobia
+nv.fear.para1	paradigms	Fear conditioning	Negative Valence Systems	Acute threat (fear)		fear conditioning|fear conditioning
+nv.fear.para2	paradigms	viewing aversive pictures or films	Negative Valence Systems	Acute threat (fear)		aversive (pictures|films)
+nv.fear.para3	paradigms	emotional imagery	Negative Valence Systems	Acute threat (fear)		emotional imagery
+nv.anx.gene1	genes	CRF	Negative Valence Systems	Potential Threat (Anxiety)		\bCRF\b
+nv.anx.mole1	molecules	CRF family	Negative Valence Systems	Potential Threat (Anxiety)		CRF family|CRF
+nv.anx.mole2	molecules	cortisol	Negative Valence Systems	Potential Threat (Anxiety)		cortisol
+nv.anx.cell1	cells	Pituitary cells	Negative Valence Systems	Potential Threat (Anxiety)		pituitary cells
+nv.anx.circ1	circuits	Bed nucleus of stria terminalis	Negative Valence Systems	Potential Threat (Anxiety)		bed nucleus of stria terminalis|stria terminalis
+nv.anx.phys1	physiology	average cortisol levels	Negative Valence Systems	Potential Threat (Anxiety)		average cortisol levels|cortisol
+nv.anx.phys2	physiology	ACTH	Negative Valence Systems	Potential Threat (Anxiety)		\bACTH\b|adrenocorticotropic hormone|adrenocorticotropic
+nv.anx.phys3	physiology	potentiated startle	Negative Valence Systems	Potential Threat (Anxiety)		potentiated startle
+nv.anx.para1	paradigms	Contextual threat	Negative Valence Systems	Potential Threat (Anxiety)		contextual threat
+nv.anx.para2	paradigms	darkness (in humans)	Negative Valence Systems	Potential Threat (Anxiety)		darkness
+nv.anx.para3	paradigms	light (in rodents)	Negative Valence Systems	Potential Threat (Anxiety)		.*rodents.*light
+nv.sus.gene1	molecules	See reference: Heim JAMA article	Negative Valence Systems	Sustained Threat		Heim.*\bJAMA\b
+nv.sus.cells1	cells	Decreased prefrontal and hippocampal arborization	Negative Valence Systems	Sustained Threat		(.*prefrontal)(.*hippocampal)(.*arborization)
+nv.sus.cells2	cells	increased microglia	Negative Valence Systems	Sustained Threat		increas(ed|ing|e) microglia
+nv.sus.circ1	circuits	Dysregulation of amygdala reactivity	Negative Valence Systems	Sustained Threat		 .*amyg*.dysreg
+nv.sus.circ2	circuits	Dysregulation of cingulate reactivity	Negative Valence Systems	Sustained Threat		 .*cingulate*.dysreg
+nv.sus.circ3	circuits	Attention network (per Corbetta and Schulman)	Negative Valence Systems	Sustained Threat		attention network|corbetta|schulman
+nv.sus.circ4	circuits	PVT (differentiates between acute and sustained)	Negative Valence Systems	Sustained Threat		\bPVT\b
+nv.sus.circ5	circuits	Habit systems (Striatum/ caudate/accumbens)	Negative Valence Systems	Sustained Threat		habit system|striatum|caudate|accumbens|nucleus accumbens
+nv.sus.circ6	circuits	Hypothalamic nuclei	Negative Valence Systems	Sustained Threat		hypothalamic nuclei|hypothalamus
+nv.sus.circ7	circuits	Increased activation of vigilance network including visual cortex	Negative Valence Systems	Sustained Threat		vigilance|visual cortex
+nv.sus.phys1	physiology	Dysregulated HPA axis	Negative Valence Systems	Sustained Threat		dysreg|HPA axis|hypothalamic pituitary|HPA
+nv.sus.phys2	physiology	Increased amplitude of error-related negativity	Negative Valence Systems	Sustained Threat		error-related negativity
+nv.sys.beha1	behavior	anxious arousal	Negative Valence Systems	Sustained Threat		anxious arousal
+nv.sys.beha2	behavior	increased conflict detection	Negative Valence Systems	Sustained Threat		conflict detection|conflict
+nv.sys.beha3	behavior	Attentional bias to threat	Negative Valence Systems	Sustained Threat		.*attention.*bias.*threat
+nv.sys.beha4	behavior	Anhedonia/decreased appetitive behavior	Negative Valence Systems	Sustained Threat		anhedonia|decreased appetitive behavior
+nv.sys.beha5	behavior	Helplessness behavior	Negative Valence Systems	Sustained Threat		helplessness behavior|helplessness
+nv.sys.beha6	behavior	Decreased libido	Negative Valence Systems	Sustained Threat		decreas(ing|ed|e) libido
+nv.sys.beha7	behavior	Punishment sensitivity	Negative Valence Systems	Sustained Threat		punishment sensitivity
+nv.sys.beha8	behavior	Increased perseverative behavior	Negative Valence Systems	Sustained Threat		Increas(ed|ing|e in) perseverative behavior
+nv.sys.beha9	behavior	Memory retrieval deficits	Negative Valence Systems	Sustained Threat		(.*memory)(.*retriev(ing|al|e))(.*(deficit|impairment))
+nv.sys.beha10	behavior	avoidance	Negative Valence Systems	Sustained Threat		avoidance
+nv.los.gene1	genes	MAOA	Negative Valence Systems	Loss		\bMAOA\b
+nv.los.gene2	genes	COMT	Negative Valence Systems	Loss		\bCOMT\b
+nv.los.gene3	genes	DAT1	Negative Valence Systems	Loss		\bDAT1\b
+nv.los.gene4	genes	5HTTR	Negative Valence Systems	Loss		\b5HTTR\b
+nv.los.gene5	genes	5HTRs	Negative Valence Systems	Loss		\b5HTR\b
+nv.los.mole1	molecules	Downregulation of glucocorticoid receptors	Negative Valence Systems	Loss		(.*down-?regulat)(.*gluco-?corticoid)(.*receptor)
+nv.los.mole2	molecules	Upregulation of CRH	Negative Valence Systems	Loss		(.*?up-?regulation) (.*\bCRH\b)
+nv.los.mole3	molecules	Estrogens	Negative Valence Systems	Loss		estrogens
+nv.los.mole4	molecules	Androgens	Negative Valence Systems	Loss		androgen
+nv.los.mole5	molecules	Oxytocin	Negative Valence Systems	Loss		oxytocin
+nv.los.mole6	molecules	Vasopressin	Negative Valence Systems	Loss		vasopressin
+nv.los.mole7	molecules	Inflammatory molecules	Negative Valence Systems	Loss		inflammat(ory|ion) molecules
+nv.los.circ1	circuits	Sustained amygdala reactivity	Negative Valence Systems	Loss		(.*sustained) (.*amygdala) (reactivity)?
+nv.los.circ2	circuits	Decreased DLPFC recruitment	Negative Valence Systems	Loss		(.*decreased) (.*(DLPFC|dorsalateral prefrontal cortex))
+nv.los.circ3	circuits	Decreased vmPFC (incl. rostral cingulate)	Negative Valence Systems	Loss		(.*decreased) (.*(vmPFC|ventrolateral pre-?frontal cortex)|(rostral)? Cingulate)
+nv.los.circ4	circuits	Increased insula activation	Negative Valence Systems	Loss		increase(d|ing)? Insula
+nv.los.circ5	circuits	Increased posterior cingulate activity	Negative Valence Systems	Loss		increase(d|ing)? Posterior cingulate
+nv.los.circ6	circuits	Decreased R parieta	Negative Valence Systems	Loss		decrease(d|ing)? Right parietal
+nv.los.circ7	circuits	PVN	Negative Valence Systems	Loss		\bPVN\b|paraventricular nucleus of hypothalamus
+nv.los.circ8	circuits	Hippocampus	Negative Valence Systems	Loss		hippocampus
+nv.los.circ9	circuits	Orbitofrontal cortex	Negative Valence Systems	Loss		orbitofrontal cortex
+nv.los.circ10	circuits	Habit systems (striatum/ caudate/accumbens)	Negative Valence Systems	Loss		habit system|striatum|caudate|accumbens|nucleus accumbens
+nv.los.circ11	circuits	Increased default mode activity	Negative Valence Systems	Loss		Increase(d|ing|e in) (DMN|default mode)
+nv.los.circ12	circuits	Dysregulated reward circuitry	Negative Valence Systems	Loss		(.*dysregulat(ed|ing))(.*reward)
+nv.los.phys1	physiology	ANS & HPA & neuroimmune dysregulation	Negative Valence Systems	Loss		neuroimmune
+nv.los.phys2	physiology	Prolonged psychophysiological reactivity	Negative Valence Systems	Loss		(.*psychophysiological) (.*reactivity)
+nv.los.beha1	behavior	Rumination	Negative Valence Systems	Loss		rumination
+nv.los.beha2	behavior	Withdrawal	Negative Valence Systems	Loss		withdrawal
+nv.los.beha3	behavior	Worry	Negative Valence Systems	Loss		worry
+nv.los.beha4	behavior	Crying	Negative Valence Systems	Loss		crying
+nv.los.beha5	behavior	Sadness	Negative Valence Systems	Loss		sadness
+nv.los.beha6	behavior	Loss-relevant recall bias	Negative Valence Systems	Loss		loss-relevant recall bias|(.*loss)(.*recall)(.*bias)
+nv.los.beha7	behavior	shame	Negative Valence Systems	Loss		shame
+nv.los.beha8	behavior	Attentional bias to negative valenced information	Negative Valence Systems	Loss		(.*negativ)(.*attent)(.*bias)
+nv.los.beha9	behavior	Guilt	Negative Valence Systems	Loss		guilt
+nv.los.beha10	behavior	Morbid Thoughts	Negative Valence Systems	Loss		morbid thoughts
+nv.los.self1	self reports	Change in attributional style	Negative Valence Systems	Loss		change in attribution
+nv.los.self2	self reports	Hopelessness	Negative Valence Systems	Loss		hopelessness
+nv.fnw.gene1	genes	MAOA	Negative Valence Systems	Frustrative Nonreward		\bMAOA\b
+nv.fnw.gene2	genes	COMT	Negative Valence Systems	Frustrative Nonreward		\bCOMT\b
+nv.fnw.gene3	genes	DAT1	Negative Valence Systems	Frustrative Nonreward		\bDAT1\b
+nv.fnw.gene4	genes	5HTTR	Negative Valence Systems	Frustrative Nonreward		\b5HTTR\b
+nv.fnw.gene5	genes	5HTRs	Negative Valence Systems	Frustrative Nonreward		\b5HTR\b
+nv.fnw.mole1	molecules	Glutamate	Negative Valence Systems	Frustrative Nonreward		glutamate
+nv.fnw.mole2	molecules	Dopamine	Negative Valence Systems	Frustrative Nonreward		dopamine
+nv.fnw.mole3	molecules	Serotonin	Negative Valence Systems	Frustrative Nonreward		serotonin
+nv.fnw.mole4	molecules	GABA	Negative Valence Systems	Frustrative Nonreward		\bGABA\b
+nv.fnw.mole5	molecules	Vasopressin	Negative Valence Systems	Frustrative Nonreward		vasopressin
+nv.fnw.mole6	molecules	steroids	Negative Valence Systems	Frustrative Nonreward		steroids
+nv.fnw.circ1	circuits	Septum	Negative Valence Systems	Frustrative Nonreward		septum
+nv.fnw.circ2	circuits	PAG	Negative Valence Systems	Frustrative Nonreward		\bPAG\b|periaqueductal
+nv.fnw.circ3	circuits	amygdala	Negative Valence Systems	Frustrative Nonreward		amygdala
+nv.fnw.circ4	circuits	hypothalamus	Negative Valence Systems	Frustrative Nonreward		hypothalamus
+nv.fnw.circ5	circuits	OFC	Negative Valence Systems	Frustrative Nonreward		\bOFC\b|orbito-?frontal
+nv.fnw.circ6	circuits	striatum	Negative Valence Systems	Frustrative Nonreward		striatum
+nv.fnw.circ7	circuits	parasympathetic system	Negative Valence Systems	Frustrative Nonreward		para-?sympathetic
+nv.fnw.circ8	circuits	LC	Negative Valence Systems	Frustrative Nonreward		locus coeruleus
+nv.fnw.self1	behavior	physical and relational aggression	Negative Valence Systems	Frustrative Nonreward		(physical|relational) aggression
+nv.fnw.self2	self reports	Proactive/ reactive aggression questionnaire	Negative Valence Systems	Frustrative Nonreward		proactive reactive aggression questionnaire
+nv.fnw.self3	self reports	Buss-Durkee and Buss Perry	Negative Valence Systems	Frustrative Nonreward		buss-durkee|buss perry|buss durkee
+nv.fnw.para1	paradigms	Physical and relational aggression paradigms	Negative Valence Systems	Frustrative Nonreward		(physical|relational) aggression (task|paradigm|activity)
+nv.fnw.para2	paradigms	resident/human intruder test	Negative Valence Systems	Frustrative Nonreward		(resident|human) intruder
+nv.fnw.para3	paradigms	PSAP	Negative Valence Systems	Frustrative Nonreward		\bPSAP\b
+nv.fnw.para4	paradigms	social dominance test	Negative Valence Systems	Frustrative Nonreward		social dominance test
