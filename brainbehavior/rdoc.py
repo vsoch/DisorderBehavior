@@ -173,7 +173,9 @@ def parse_pickle_results(rdoc_files,output_file_prefix):
     match_matrix = tmp["matches"]
     score_matrix = tmp["features"]
     # Now iterate over results, add to matrix
-    for rdoc_file in rdoc_files:
+    for r in range(0,len(rdoc_files)):
+      print "Parsing file %s of %s" % (r,len(rdoc_files))
+      rdoc_file = rdoc_files[r]
       tmp = pickle.load(open(rdoc_file,"rb"))
       match_matrix = match_matrix.append(tmp["matches"])
       score_matrix = score_matrix.append(tmp["features"])
