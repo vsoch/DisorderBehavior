@@ -23,7 +23,7 @@ start = 0
 iters = len(pc_ids)/100
 
 # Prepare and submit a job for each
-for i in range(0,5000):
+for i in range(5000,iters):
   start = i*100
   if i != iters:
     end = start + 100

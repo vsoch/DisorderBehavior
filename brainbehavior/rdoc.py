@@ -147,7 +147,7 @@ class rdoc:
           if start < 0: start = 0
           if end > len(fulltext): end = len(fulltext)
           matchlist.append(fulltext[start:end])
-        matches[feature_id] = matchlist
+        matches[feature_id] = "|".join(matchlist)
         # We will just append a raw count for now - should probably normalize by
         # the length of the article, etc.
         scores.append(len(matchlist))
@@ -157,6 +157,33 @@ class rdoc:
 # MAIN ----------------------------------------------------------------------------------
 def main():
     print __doc__
+
+'''Parse RDoC results into pickle and csv files'''
+def parse_pickle_results(rdoc_files,output_file_prefix):
+  
+  # Sort the files by name
+  rdoc_files.sort()  
+
+  # Create the initial data frames from the first result
+  tmp = pickle.load(open(rdoc_files.pop(0),"rb"))
+  if any([x in tmp.keys() for x in ["features","matches"]]) == False:
+    print "Error: file does not match rdoc expectation: should be dictionary with 'matches' and 'features' as keys!"
+  else
+    # We need a matrix for results, and for the matches
+    match_matrix = tmp["matches"]
+    score_matrix = tmp["features"]
+    # Now iterate over results, add to matrix
+    for rdoc_file in rdoc_files:
+      tmp = pickle.load(open(rdoc_file,"rb"))
+      match_matrix = match_matrix.append(tmp["matches"])
+      score_matrix = score_matrix.append(tmp["features"])
+    # Write to pickle, and to text file (dangerous?)
+    print "Saving results as pickle and csv/tsv with prefix %s." output_file_prefix
+    match_matrix.to_pickle("_matches.pkl" % output_file_prefix)
+    score_matrix.to_pickle("_features.pkl" % output_file_prefix)
+    match_matrix.to_csv("_matches.pkl" % output_file_prefix,sep="\t",index_label="pmid")
+    score_matrix.to_csv("_features.pkl" % output_file_prefix, index_label="pmid")
+
 
 if __name__ == "__main__":
     main()

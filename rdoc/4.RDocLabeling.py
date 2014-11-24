@@ -9,6 +9,7 @@ import os
 import tarfile
 import rdoc
 import pickle
+import sys
 
 start = int(sys.argv[1])        # Start index of files to extract
 end = int(sys.argv[2])          # End index of files to extract
