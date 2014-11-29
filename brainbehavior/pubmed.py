@@ -39,14 +39,14 @@ __license__ = "Python"
 # These functions will find papers of interest to crosslist with Neurosynth
 class Pubmed:
 
-  """Load pubmed FTP info from pickle"""
+  """Init Pubmed Object"""
   def __init__(self,email):
     self.email = email
+
+  def get_pubmed_cental_ids(self):
     print "Downloading latest version of pubmed central ftp lookup..."
     self.ftp = pd.read_csv("ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/file_list.txt",skiprows=1,sep="\t",header=None)
     self.ftp.columns = ["URL","JOURNAL","PMCID"]
-
-  def get_pubmed_cental_ids(self):
     return list(self.ftp["PMCID"])
 
   """Download full text of articles with pubmed ids pmids to folder"""
@@ -67,8 +67,8 @@ class Pubmed:
         os.system("wget \"%s\" -P %s" % (url,download_place))
         
 
-  """Read articles from pubmed"""
-  def getArticle(self,id1):
+  """Read and return single article (or search term) pubmed"""
+  def get_single_article(self,id1):
     Entrez.email = self.email
     handle = Entrez.esearch(db='pubmed',term=id1,retmax=1)
     record = Entrez.read(handle)
@@ -76,18 +76,44 @@ class Pubmed:
     # If we have a match
     if "IdList" in record:
       if record["Count"] != "0":
-        # Fetch the paper!
+        # Get the id and fetch the paper!
         print "Retrieving paper " + str(id1) + "..."
-        handle = Entrez.efetch(db='pubmed', id=id1,retmode='xml',retmax=1)
+        handle = Entrez.efetch(db='pubmed', id=record["IdList"][0],retmode='xml',retmax=1)
         record = Entrez.read(handle)
         record = record[0]
         article = Article(record)
+        return article
       else: 
         print "No articles found for " + str(id1)
-    return article
+
+  """Compile search terms into one search, return all"""
+  def get_many_articles(self,ids):
+
+    pmids = []
+    for id1 in ids:
+      Entrez.email = self.email
+      handle = Entrez.esearch(db='pubmed',term=id1,retmax=1)
+      record = Entrez.read(handle)
+      # If we have a match
+      if "IdList" in record:
+        if record["Count"] != "0":
+          pmids.append(record["IdList"][0])
+
+    if len(pmids) > 0: 
+      # Retrieve them all!
+      print "Retrieving %s papers..." % (len(pmids))
+      handle = Entrez.efetch(db='pubmed', id=pmids,retmode='xml')
+      records = Entrez.read(handle)
+      articles = dict()
+      for record in records:
+        articles[str(record["MedlineCitation"]["PMID"])] = Article(record)
+      return articles
+    else: 
+        print "No articles found."
+
 
   """Search article for a term of interest - no processing of expression. return 1 if found, 0 if not"""
-  def searchArticle(self,article,term):
+  def search_article(self,article,term):
     text = [article.getAbstract()] + article.getMesh() + article.getKeywords()
     text = text[0].lower()
     expression = re.compile(term)
@@ -100,7 +126,7 @@ class Pubmed:
 
 
   """Search article for a term of interest - stem list of words first - return 1 if found, 0 if not"""
-  def searchArticleList(self,article,term):
+  def search_article_list(self,article,term):
     text = [article.getAbstract()] + article.getMesh() + article.getKeywords()
     text = text[0].lower()
     # Perform stemming of disorder terms
@@ -126,7 +152,7 @@ class Pubmed:
       return 0
 
   """Return dictionaries of dois, pmids, each with order based on author name (Last FM)"""
-  def getAuthorArticles(self,author):
+  def get_author_articles(self,author):
     
     print "Getting pubmed articles for author " + author
     
@@ -186,9 +212,9 @@ class Pubmed:
 class Article:
 
   def __init__(self,record):
-    self.parseRecord(record)
+    self._parseRecord(record)
 
-  def parseRecord(self,record):
+  def _parseRecord(self,record):
     if "MedlineCitation" in record:
       self.authors = record["MedlineCitation"]["Article"]["AuthorList"]
       if "MeshHeadingList" in record:
@@ -204,6 +230,7 @@ class Article:
         self.abstract = record["MedlineCitation"]["Article"]["Abstract"]
       else:
         self.abstract = ""
+      self.ids = record["PubmedData"]["ArticleIdList"]
 
   """get Abstract text"""
   def getAbstract(self):

@@ -142,11 +142,11 @@ class rdoc:
         if match:
           print "Found match for " + f[1]["SEARCHTERM"] + "!"
           # Extract the gist - 10 words before and after
-          start = match.start() - 10
-          end = match.start() + 10
+          start = match.start() - 100
+          end = match.start() + 100
           if start < 0: start = 0
           if end > len(fulltext): end = len(fulltext)
-          matchlist.append(fulltext[start:end])
+          matchlist.append(fulltext[start:end].encode('utf-8'))
         matches[feature_id] = "|".join(matchlist)
         # We will just append a raw count for now - should probably normalize by
         # the length of the article, etc.
@@ -181,10 +181,10 @@ def parse_pickle_results(rdoc_files,output_file_prefix):
       score_matrix = score_matrix.append(tmp["features"])
     # Write to pickle, and to text file (dangerous?)
     print "Saving results as pickle and csv/tsv with prefix %s." output_file_prefix
-    match_matrix.to_pickle("_matches.pkl" % output_file_prefix)
-    score_matrix.to_pickle("_features.pkl" % output_file_prefix)
-    match_matrix.to_csv("_matches.pkl" % output_file_prefix,sep="\t",index_label="pmid")
-    score_matrix.to_csv("_features.pkl" % output_file_prefix, index_label="pmid")
+    match_matrix.to_pickle("%s_matches.pkl" % output_file_prefix)
+    score_matrix.to_pickle("%s_features.pkl" % output_file_prefix)
+    match_matrix.to_csv("%s_matches.pkl" % output_file_prefix,sep="\t",index_label="PMID")
+    score_matrix.to_csv("%s_features.csv" % output_file_prefix, index_label="PMID")
 
 
 if __name__ == "__main__":
