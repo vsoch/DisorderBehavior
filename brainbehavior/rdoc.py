@@ -23,6 +23,7 @@ rdoc:   Methods for working with on and offline pubmed data
 """
 
 import re
+from pubmed import extract_xml_compressed, read_xml, recursive_text_extract, get_xml_tree
 from lxml import etree
 import pandas as pd
 import tarfile
@@ -59,15 +60,12 @@ class rdoc:
         # If there is an error with a paper, we don't want it to 
         # end the whole process! Just don't add it.
         try:
-          if re.search("[.tar.gz]",paper):
-            raw = self.extract_xml_compressed(paper)
-          else:
-            raw = self.read_xml(paper)
+          raw = get_xml_tree(paper)           
           data = etree.XML(raw)
 
           # For now, parse the entire article - may want to eventually limit scope
           # Get text - recursively go through elements
-          parsed = self._recursive_text_extract(data)
+          parsed = recursive_text_extract(data)
           pmid = parsed[0]      
           text = parsed[1]
           pmids.append(pmid)
@@ -86,44 +84,6 @@ class rdoc:
       matches_matrix["PMID"] = pmids
       result = {"features":feature_matrix,"matches":matches_matrix}
       return result
-
-    '''Return text for xml tree element'''
-    def _recursive_text_extract(self,xmltree):
-      text = []
-      queue = []
-      article_ids = []
-      for elem in reversed(list(xmltree)):
-        queue.append(elem)
-      
-      while (len(queue) > 0):
-        current = queue.pop()
-        if current.text != None:
-          text.append(current.text)
-        if "pub-id-type" in current.keys():
-          article_ids.append(current.text)
-        if len(list(current)) > 0:
-          for elem in reversed(list(current)):
-            queue.append(elem)
-
-      # The pubmed id is the first, so it will be last in the list
-      pmid = article_ids[0]      
-      return (pmid,text)
-
-    '''Read XML from compressed file'''
-    def extract_xml_compressed(self,paper): 
-      tar = tarfile.open(paper, 'r:gz')
-      for tar_info in tar:
-        if os.path.splitext(tar_info.name)[1] == ".nxml":
-          print "Extracting text from %s" %(tar_info.name)
-          file_object = tar.extractfile(tar_info)
-          return file_object.read().replace('\n', '')
-          
-
-    '''Extract text from xml or nxml file directory'''
-    def read_xml(self,xml):
-      with open (xml, "r") as myfile:
-        return myfile.read().replace('\n', '')
-      
 
     '''Match features to sentences in the xml text'''
     def search_for_features(self,text):

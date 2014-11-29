@@ -16,6 +16,7 @@ SAMPLE USAGE: Please see README included with package
 
 """
 
+import tarfile
 import urllib
 import numpy as np
 import string
@@ -43,14 +44,18 @@ class Pubmed:
   def __init__(self,email):
     self.email = email
 
-  def get_pubmed_cental_ids(self):
+  def _get_pmc_lookup(self):
     print "Downloading latest version of pubmed central ftp lookup..."
     self.ftp = pd.read_csv("ftp://ftp.ncbi.nlm.nih.gov/pub/pmc/file_list.txt",skiprows=1,sep="\t",header=None)
     self.ftp.columns = ["URL","JOURNAL","PMCID"]
+  
+  def get_pubmed_central_ids(self):
+    if not self.ftp: self._get_pmc_lookup()
     return list(self.ftp["PMCID"])
 
   """Download full text of articles with pubmed ids pmids to folder"""
   def download_pubmed(self,pmids,download_folder):
+    if not self.ftp: self._get_pmc_lookup()
     # pmids = [float(x) for x in pmids]
     # Filter ftp matrix to those ids
     # I couldn't figure out how to do this in one line
@@ -208,6 +213,7 @@ class Pubmed:
     return (dois, pmid)
 
 
+# ARTICLE ------------------------------------------------------------------------------
 """An articles object holds a pubmed article"""
 class Article:
 
@@ -247,3 +253,57 @@ class Article:
   def getKeywords(self):
     return self.keywords
 
+# PARSE  ------------------------------------------------------------------------------
+# General functions for parsing XML
+
+def get_xml_tree(paper):
+  if re.search("[.tar.gz]",paper):
+    raw = extract_xml_compressed(paper)
+  else:
+    raw = read_xml(paper)
+  return raw
+
+'''Return text for xml tree element'''
+def recursive_text_extract(xmltree):
+  text = []
+  queue = []
+  article_ids = []
+  for elem in reversed(list(xmltree)):
+    queue.append(elem)
+  
+  while (len(queue) > 0):
+    current = queue.pop()
+    if current.text != None:
+      text.append(current.text)
+    if "pub-id-type" in current.keys():
+      article_ids.append(current.text)
+    if len(list(current)) > 0:
+      for elem in reversed(list(current)):
+        queue.append(elem)
+
+  # The pubmed id is the first, so it will be last in the list
+  pmid = article_ids[0]      
+  return (pmid,text)
+
+'''Read XML from compressed file'''
+def extract_xml_compressed(paper): 
+  tar = tarfile.open(paper, 'r:gz')
+  for tar_info in tar:
+    if os.path.splitext(tar_info.name)[1] == ".nxml":
+      print "Extracting text from %s" %(tar_info.name)
+      file_object = tar.extractfile(tar_info)
+      return file_object.read().replace('\n', '')
+          
+'''Extract text from xml or nxml file directory'''
+def read_xml(xml):
+  with open (xml, "r") as myfile:
+    return myfile.read().replace('\n', '')
+
+'''Search text for list of terms, return list of match counts'''
+def search_text(text,terms):
+  vector = np.zeros(len(terms))
+  for t in range(0,len(terms)):
+    expression = re.compile("\s%s\s|\s%s\." %(terms[t],terms[t]))
+    match = expression.findall(text)
+    vector[t] = len(match)
+  return vector

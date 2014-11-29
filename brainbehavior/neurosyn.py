@@ -27,7 +27,7 @@ from nibabel import nifti1
 import re
 import pandas as pd
 
-__author__ = ["Vanessa Sochat (vsochat@stanford.edu)","Matthew Sacchet (msacchet@stanford.edu)"]
+__author__ = ["Vanessa Sochat (vsochat@stanford.edu)"]
 __version__ = "$Revision: 1.0 $"
 __date__ = "$Date: 2011/09/09 $"
 __license__ = "Python"
