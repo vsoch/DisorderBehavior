@@ -14,7 +14,7 @@ data = neurosyn.get_database("8000")
 papers = np.unique(data["title"])
 
 # Use pubmed to look up dois
-email = "vsochat@gmail.com"
+email = "@vsoch"
 pm = pubmed.Pubmed(email)
 
 # Let's save articles here
